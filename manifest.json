@@ -3,7 +3,7 @@
 	"name": "RSS Copyist",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Collect RSS articles into notes.",
+	"description": "get the rss articles as mdfiles to your obsidian vault. no settingstab, config it in mdfiles.",
 	"author": "Aoout",
 	"authorUrl": "https://github.com/aoout",
 	"isDesktopOnly": false
