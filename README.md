@@ -2,9 +2,11 @@
 
 ## Usage
 
-Create a folder to represent a subscription. Place the feed.md file and template.md file in its root directory to represent subscriptions and templates. 
+Create a folder to represent a feed. Place the feed.md file and template.md file in its root directory to represent feedsurl and templates. 
 
-You can also create a new folder to form a nested structure to organize these subscriptions. At this time, if there is no template.md file in the root directory of a subscription folder, it will search in the upper-level directory.
+You can also create a new folder to form a nested structure to organize these feeds. At this time, if there is no template.md file in the root directory of a feed folder, it will search in the upper-level directory.
+
+When you want to get the newest articles, open a mdfile in the feed folder or folder including some feed folders, and run the command.
 
 ## With Projects Plugin
 
