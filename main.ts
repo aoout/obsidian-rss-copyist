@@ -19,17 +19,23 @@ export default class SimpleRSSPlugin extends Plugin {
 			return;
 		}
 		this.parseOneFeed(folder);
-
+		
 		folder.children.forEach((item) => {
+			console.log(`children: ${item.name}`);
+			console.log(`???: ${item instanceof TFolder}`);
 			if (item instanceof TFolder) {
+				
 				if (
 					item.children.filter((subitem) => {
-						subitem instanceof TFolder;
+						return subitem instanceof TFolder;
 					}).length == 0
 				) {
 					this.parseOneFeed(item);
+					console.log(`parseOneFeed: ${item.name}`);
+					
 				} else {
 					this.parseAllFeeds(item);
+					console.log(`parseAllFeed: ${item.name}`);
 				}
 			}
 		});
