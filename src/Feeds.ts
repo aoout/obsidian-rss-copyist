@@ -33,6 +33,9 @@ export default class FeedsFolder {
 			const text = this.parseItem(template, item).replace(
 				"{{item.firstImage}}",
 				firstImage ?? ""
+			).replace(
+				"{{item.feed}}",
+				name ?? ""
 			);
 
 			const filePath =

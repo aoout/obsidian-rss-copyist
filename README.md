@@ -8,6 +8,7 @@ Create a folder to represent a feed. Place the feed.md file and template.md file
 
 ```
 ---
+feed: {{item.feed}}
 url: {{item.link}}
 author: {{item.author}}
 date: {{item.pubDate}}

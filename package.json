@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-rss-copyist",
-	"version": "1.0.1",
+	"version": "1.0.0",
 	"description": "get the rss articles as mdfiles to your obsidian vault. no settingstab, config it in mdfiles.",
 	"main": "main.js",
 	"scripts": {
