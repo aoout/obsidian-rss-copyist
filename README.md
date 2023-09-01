@@ -26,3 +26,7 @@ url: https://rsshub.app/sspai/index
 newestNum: 10
 ---
 ```
+
+# 示例库
+
+具体如何使用，请参考我制作的[示例库](https://github.com/aoout/ObsidianRSSExample)。
