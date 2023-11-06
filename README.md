@@ -8,11 +8,11 @@ Create a folder to represent a feed. Place the feed.md file and template.md file
 
 ```
 ---
-feed: {{item.feed}}
-url: {{item.link}}
-author: {{item.author}}
-date: {{item.pubDate}}
-firstImage: {{item.firstImage}}
+feed: "{{item.feed}}"
+url: "{{item.link}}"
+author: "{{item.author}}"
+date: "{{item.pubDate}}"
+firstImage: "{{item.firstImage}}"
 unread: true
 ---
 {{item.content}}
@@ -24,7 +24,15 @@ unread: true
 ---
 url: https://rsshub.app/sspai/index
 newestNum: 10
+showunreadonly: true
 ---
+```dataview
+table dateformat(file.mtime, "yyyy.MM.dd") AS "publish date",
+"![](" + firstImage + ")"
+where contains(file.folder, this.file.folder) and file.name != this.file.name
+and (!this.showunreadonly or unread)
+sort file.mtime DESC 
+```
 ```
 
 # 示例库
