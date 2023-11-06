@@ -33,7 +33,6 @@ where contains(file.folder, this.file.folder) and file.name != this.file.name
 and (!this.showunreadonly or unread)
 sort file.mtime DESC 
 ```
-```
 
 # 示例库
 
