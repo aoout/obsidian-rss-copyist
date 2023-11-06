@@ -3,6 +3,7 @@ import Parser from "rss-parser";
 import { DateTime } from "luxon";
 
 function convertToValidFilename(string: string): string {
+	// eslint-disable-next-line no-useless-escape
 	return string.replace(/[\/|\\:*?"<>]/g, " ");
 }
 
@@ -23,9 +24,10 @@ export default class FeedsFolder {
 		if (!newestNum) {
 			newestNum = 5;
 		}
-		const name = this.folderPath.split("/").at(-1);
+		const name = this.folderPath.split("/").slice(-1)[0];
 		new Notice("Sync Feed: " + name);
 		const content = await this.getUrlContent(feedUrl);
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		content.items.slice(0, newestNum).forEach((item: any) => {
 			const mdcontent = htmlToMarkdown(item.content);
 			const images = mdcontent.match(/!\[.*?\]\((.*?)\)/) ?? ["", ""];
@@ -59,6 +61,7 @@ export default class FeedsFolder {
 		return parser.parseString(await text);
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	parseItem(template: string, item: any): string {
 		return template
 			.replace("{{item.title}}", item.title ?? "")

@@ -1,5 +1,5 @@
 import { Plugin, TFile, TFolder } from "obsidian";
-import FeedsFolder from "src/Feeds";
+import FeedsFolder from "./feed";
 
 export default class SimpleRSSPlugin extends Plugin {
 	async onload() {
@@ -79,5 +79,6 @@ export default class SimpleRSSPlugin extends Plugin {
 		}
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	onunload() {}
 }

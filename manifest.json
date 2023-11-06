@@ -1,10 +1,11 @@
 {
 	"id": "rss-copyist",
-	"name": "RSS Copyist",
-	"version": "1.0.0",
-	"minAppVersion": "0.15.0",
-	"description": "get the rss articles as mdfiles to your obsidian vault. no settingstab, config it in mdfiles.",
-	"author": "Aoout",
+	"name": "Rss Copyist",
+	"description": "get the rss articles as mdfiles to your vault. no settingstab, config it in mdfiles.",
+	"author": "aoout",
 	"authorUrl": "https://github.com/aoout",
-	"isDesktopOnly": true
+
+	"isDesktopOnly": false,
+	"minAppVersion": "0.16.0",
+	"version": "1.0.0"
 }
