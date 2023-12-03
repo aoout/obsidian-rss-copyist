@@ -1,44 +1,42 @@
 import { Plugin, TFile, TFolder } from "obsidian";
 import FeedsFolder from "./feed";
+import { getNotesWithTag } from "./utils/obsidianUtils";
 
 export default class SimpleRSSPlugin extends Plugin {
 	async onload() {
 		this.addCommand({
-			id: "get-feed",
+			id: "get-the-feed",
+			name: "Get the newlest articels from the feed",
+			callback: async () => {
+				const activeFile = this.app.workspace.getActiveFile() as TFile;
+				if(!activeFile) return;
+				const folder = await this.getFeedFolder(activeFile);
+				await this.parseFeed(folder);
+			},
+		});
+		this.addCommand({
+			id: "get-all-feed",
 			name: "Get the newlest articels from all feeds",
 			callback: async () => {
-				await this.parseAllFeeds(
-					this.app.workspace.getActiveFile()?.parent ?? null
-				);
+				const files = getNotesWithTag(this.app,"feed");
+				files.forEach(async (file)=>{
+					const folder = await this.getFeedFolder(file);
+					await this.parseFeed(folder);
+				});
 			},
 		});
 	}
 
-	async parseAllFeeds(folder: TFolder | null) {
-		if (!folder) {
-			return;
-		}
-		this.parseOneFeed(folder);
-		
-		folder.children.forEach((item) => {
-			if (item instanceof TFolder) {
-				if (
-					item.children.filter((subitem) => {
-						return subitem instanceof TFolder;
-					}).length == 0
-				) {
-					this.parseOneFeed(item);
-					console.log(`parseOneFeed: ${item.name}`);
-					
-				} else {
-					this.parseAllFeeds(item);
-					console.log(`parseAllFeed: ${item.name}`);
-				}
-			}
-		});
+	async getFeedFolder(file:TFile){
+		const tags = this.app.metadataCache.getFileCache(file)?.frontmatter?.tags;
+		if(! (tags.includes("feed"))) return;
+		const folderPath = file.parent.path + "/" + file.basename;
+		const folder = await this.app.vault.createFolder(folderPath);
+		if(!folder) return;
+		return folder;
 	}
 
-	async parseOneFeed(folder: TFolder) {
+	async parseFeed(folder: TFolder) {
 		const feedMetadata = this.getFeedMetadata(folder);
 		const template = await this.getTemplate(folder);
 		if (feedMetadata && template != "") {
@@ -54,7 +52,7 @@ export default class SimpleRSSPlugin extends Plugin {
 
 	getFeedMetadata(folder: TFolder) {
 		const result = this.app.vault.getAbstractFileByPath(
-			folder.path + "/feed.md"
+			folder.parent.path + "/" + folder.name + ".md"
 		);
 		if (result instanceof TFile) {
 			return this.app.metadataCache.getFileCache(result)?.frontmatter;
@@ -63,7 +61,7 @@ export default class SimpleRSSPlugin extends Plugin {
 
 	async getTemplate(folder: TFolder): Promise<string> {
 		const result = this.app.vault.getAbstractFileByPath(
-			folder.path + "/template.md"
+			folder.parent.path + "/template.md"
 		);
 		if (result instanceof TFile) {
 			return await this.app.vault.cachedRead(result);
