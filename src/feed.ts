@@ -1,6 +1,6 @@
 import { request, Notice, Vault, htmlToMarkdown } from "obsidian";
 import { DateTime } from "luxon";
-import * as xml2js from "xml2js";
+import * as xml2js from "xml-js";
 
 function convertToValidFilename(string: string): string {
 	// eslint-disable-next-line no-useless-escape
@@ -57,21 +57,27 @@ export default class FeedsFolder {
 			url: url,
 			method: "GET",
 		});
-		const parser = new xml2js.Parser();
-		const result = await parser.parseStringPromise(data);
-		let items = result.rss.channel[0].item;
-		items = items.map((item)=>({
-			"title":item.title[0],
-			"content":item.description[0],
-			"author":item.author[0],
-			"link":item.link[0],
-			"pubDate":item.pubDate[0]
-		}));
+		const result = xml2js.xml2js(data);
+		const items = result.elements[0].elements[0].elements.filter(element=>element.name=="item");
+		console.log(items);
+
+		const itemsResults = [];
+		items.forEach((item)=>{
+			const itemsResult = {};
+			item.elements.forEach((element)=>{
+				if(element.name=="title") itemsResult["title"] = element.elements[0].cdata;
+				if(element.name=="description") itemsResult["content"] = element.elements[0].cdata;
+				if(element.name=="author") itemsResult["author"] = element.elements[0].cdata;
+				if(element.name=="link") itemsResult["link"] = element.elements[0].text;
+				if(element.name=="pubDate") itemsResult["pubDate"] = element.elements[0].text;
+			});
+			itemsResults.push(itemsResult);
+		});
+		console.log(itemsResults);
 		const feed = {
-			"items":items
+			"items":itemsResults
 		};
 		return feed;
-		
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any

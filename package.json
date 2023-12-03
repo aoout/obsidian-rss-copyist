@@ -42,6 +42,6 @@
 	"dependencies": {
 		"commit-and-tag-version": "^11.0.0",
 		"luxon": "^3.4.3",
-		"rss-parser": "^3.13.0"
+		"xml-js": "^1.6.11"
 	}
 }
