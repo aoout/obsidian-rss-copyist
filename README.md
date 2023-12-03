@@ -2,7 +2,7 @@
 
 ## Usage
 
-Create a folder to represent a feed. Place the feed.md file and template.md file in its root directory to represent feedsurl and templates. 
+Create a folder to represent a feed. Place the {{feed}}.md file and template.md file in its parent's root directory to represent feedsurl and templates. 
 
 ## My Template
 
@@ -25,6 +25,8 @@ unread: true
 url: https://rsshub.app/sspai/index
 newestNum: 10
 showunreadonly: true
+tags:
+- feed
 ---
 ```dataview
 table dateformat(file.mtime, "yyyy.MM.dd") AS "publish date",
