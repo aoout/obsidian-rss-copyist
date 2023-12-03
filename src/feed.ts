@@ -1,6 +1,6 @@
 import { request, Notice, Vault, htmlToMarkdown } from "obsidian";
-import Parser from "rss-parser";
 import { DateTime } from "luxon";
+import * as xml2js from "xml2js";
 
 function convertToValidFilename(string: string): string {
 	// eslint-disable-next-line no-useless-escape
@@ -53,12 +53,25 @@ export default class FeedsFolder {
 	}
 
 	async getUrlContent(url: string) {
-		const parser: Parser = new Parser();
-		const text = request({
+		const data = await request({
 			url: url,
 			method: "GET",
 		});
-		return parser.parseString(await text);
+		const parser = new xml2js.Parser();
+		const result = await parser.parseStringPromise(data);
+		let items = result.rss.channel[0].item;
+		items = items.map((item)=>({
+			"title":item.title[0],
+			"content":item.description[0],
+			"author":item.author[0],
+			"link":item.link[0],
+			"pubDate":item.pubDate[0]
+		}));
+		const feed = {
+			"items":items
+		};
+		return feed;
+		
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -66,12 +79,8 @@ export default class FeedsFolder {
 		return template
 			.replace("{{item.title}}", item.title ?? "")
 			.replace("{{item.content}}", htmlToMarkdown(item.content) ?? "")
-			.replace("{{item.description}}", item.description ?? "")
 			.replace("{{item.author}}", item.author ?? "")
 			.replace("{{item.link}}", item.link ?? "")
-			.replace("{{item.guid}}", item.guid ?? "")
-			.replace("{{item.comments}}", item.comments ?? "")
-			.replace("{{item.categories}}", item.categories ?? "")
 			.replace(
 				"{{item.pubDate}}",
 				DateTime.fromHTTP(item.pubDate).toISODate() ?? ""

@@ -21,10 +21,7 @@ export default class SimpleRSSPlugin extends Plugin {
 		this.parseOneFeed(folder);
 		
 		folder.children.forEach((item) => {
-			console.log(`children: ${item.name}`);
-			console.log(`???: ${item instanceof TFolder}`);
 			if (item instanceof TFolder) {
-				
 				if (
 					item.children.filter((subitem) => {
 						return subitem instanceof TFolder;
