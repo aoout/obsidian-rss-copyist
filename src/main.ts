@@ -35,9 +35,12 @@ export default class RSSCopyistPlugin extends Plugin {
 
 	async getFeedFolder(file:TFile){
 		const folderPath = file.parent.path + "/" + file.basename;
-		const folder = await this.app.vault.createFolder(folderPath);
+		let folder = this.app.vault.getAbstractFileByPath(folderPath);
+		if(! ( folder instanceof TFolder)){
+			folder = await this.app.vault.createFolder(folderPath);
+		}
 		if(!folder) return;
-		return folder;
+		return folder as TFolder;
 	}
 
 	async parseFeed(folder: TFolder) {
