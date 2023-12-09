@@ -13,7 +13,8 @@ export default class RSSCopyistPlugin extends Plugin {
 			checkCallback: (checking: boolean) => {
 				const activeFile = this.app.workspace.getActiveFile() as TFile;
 				if (!activeFile) return false;
-				const tags = this.app.metadataCache.getFileCache(activeFile)?.frontmatter?.tags;
+				const tags =
+					this.app.metadataCache.getFileCache(activeFile)?.frontmatter?.tags ?? [];
 				if (!tags.includes(this.settings.tag)) return false;
 				if (!checking) {
 					this.getFeedFolder(activeFile).then((folder) => {
@@ -24,7 +25,7 @@ export default class RSSCopyistPlugin extends Plugin {
 			},
 		});
 		this.addCommand({
-			id: "get-all-feed",
+			id: "get-all-feeds",
 			name: "Get the newlest articels from all feeds",
 			callback: async () => {
 				const files = getNotesWithTag(this.app, "feed");
@@ -32,6 +33,17 @@ export default class RSSCopyistPlugin extends Plugin {
 					const folder = await this.getFeedFolder(file);
 					await this.parseFeed(folder);
 				});
+			},
+		});
+		this.addCommand({
+			id: "clear-all-feeds",
+			name: "Clear the articels from all feeds",
+			callback: async () => {
+				const files = getNotesWithTag(this.app, this.settings.tag);
+				for (const file of files) {
+					const folder = await this.getFeedFolder(file);
+					await this.app.vault.delete(folder,true);
+				}
 			},
 		});
 	}
