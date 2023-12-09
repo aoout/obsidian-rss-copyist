@@ -1,9 +1,12 @@
 import { Plugin, TFile, TFolder } from "obsidian";
 import FeedsFolder from "./feed";
 import { getNotesWithTag } from "./utils/obsidianUtils";
+import { DEFAULT_SETTINGS, RSSCopyistSettings } from "./settings/settings";
 
 export default class RSSCopyistPlugin extends Plugin {
+	settings: RSSCopyistSettings;
 	async onload() {
+		await this.loadSettings();
 		this.addCommand({
 			id: "get-the-feed",
 			name: "Get the newlest articels from the feed",
@@ -11,7 +14,7 @@ export default class RSSCopyistPlugin extends Plugin {
 				const activeFile = this.app.workspace.getActiveFile() as TFile;
 				if(!activeFile) return false;
 				const tags = this.app.metadataCache.getFileCache(activeFile)?.frontmatter?.tags;
-				if(!(tags.includes("feed"))) return false;
+				if(!(tags.includes(this.settings.tag))) return false;
 				if(!checking){
 					this.getFeedFolder(activeFile).then((folder)=>{
 						this.parseFeed(folder);
@@ -31,6 +34,14 @@ export default class RSSCopyistPlugin extends Plugin {
 				});
 			},
 		});
+	}
+
+	async loadSettings(): Promise<void> {
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+	}
+
+	async saveSettings(): Promise<void> {
+		await this.saveData(this.settings);
 	}
 
 	async getFeedFolder(file:TFile){
