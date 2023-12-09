@@ -10,13 +10,13 @@ export default class RSSCopyistPlugin extends Plugin {
 		this.addCommand({
 			id: "get-the-feed",
 			name: "Get the newlest articels from the feed",
-			checkCallback:(checking:boolean) => {
+			checkCallback: (checking: boolean) => {
 				const activeFile = this.app.workspace.getActiveFile() as TFile;
-				if(!activeFile) return false;
+				if (!activeFile) return false;
 				const tags = this.app.metadataCache.getFileCache(activeFile)?.frontmatter?.tags;
-				if(!(tags.includes(this.settings.tag))) return false;
-				if(!checking){
-					this.getFeedFolder(activeFile).then((folder)=>{
+				if (!tags.includes(this.settings.tag)) return false;
+				if (!checking) {
+					this.getFeedFolder(activeFile).then((folder) => {
 						this.parseFeed(folder);
 					});
 				}
@@ -27,8 +27,8 @@ export default class RSSCopyistPlugin extends Plugin {
 			id: "get-all-feed",
 			name: "Get the newlest articels from all feeds",
 			callback: async () => {
-				const files = getNotesWithTag(this.app,"feed");
-				files.forEach(async (file)=>{
+				const files = getNotesWithTag(this.app, "feed");
+				files.forEach(async (file) => {
 					const folder = await this.getFeedFolder(file);
 					await this.parseFeed(folder);
 				});
@@ -44,13 +44,13 @@ export default class RSSCopyistPlugin extends Plugin {
 		await this.saveData(this.settings);
 	}
 
-	async getFeedFolder(file:TFile){
+	async getFeedFolder(file: TFile) {
 		const folderPath = file.parent.path + "/" + file.basename;
 		let folder = this.app.vault.getAbstractFileByPath(folderPath);
-		if(! ( folder instanceof TFolder)){
+		if (!(folder instanceof TFolder)) {
 			folder = await this.app.vault.createFolder(folderPath);
 		}
-		if(!folder) return;
+		if (!folder) return;
 		return folder as TFolder;
 	}
 
@@ -78,9 +78,7 @@ export default class RSSCopyistPlugin extends Plugin {
 	}
 
 	async getTemplate(folder: TFolder): Promise<string> {
-		const result = this.app.vault.getAbstractFileByPath(
-			folder.parent.path + "/template.md"
-		);
+		const result = this.app.vault.getAbstractFileByPath(folder.parent.path + "/template.md");
 		if (result instanceof TFile) {
 			return await this.app.vault.cachedRead(result);
 		} else {

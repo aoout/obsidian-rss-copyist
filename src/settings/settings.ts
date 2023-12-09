@@ -1,7 +1,7 @@
 export interface RSSCopyistSettings {
-    tag : string
+	tag: string;
 }
 
 export const DEFAULT_SETTINGS: RSSCopyistSettings = {
-	tag : "feed"
+	tag: "feed",
 };

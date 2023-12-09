@@ -32,19 +32,11 @@ export default class FeedsFolder {
 			const mdcontent = htmlToMarkdown(item.content);
 			const images = mdcontent.match(/!\[.*?\]\((.*?)\)/) ?? ["", ""];
 			const firstImage = images[1];
-			const text = this.parseItem(template, item).replace(
-				"{{item.firstImage}}",
-				firstImage ?? ""
-			).replace(
-				"{{item.feed}}",
-				name ?? ""
-			);
+			const text = this.parseItem(template, item)
+				.replace("{{item.firstImage}}", firstImage ?? "")
+				.replace("{{item.feed}}", name ?? "");
 
-			const filePath =
-				this.folderPath +
-				"/" +
-				convertToValidFilename(item.title) +
-				".md";
+			const filePath = this.folderPath + "/" + convertToValidFilename(item.title) + ".md";
 			vault.create(filePath, text).then((file) => {
 				console.log("Note created :" + file.basename);
 				new Notice("Note created :" + file.basename);
@@ -59,24 +51,43 @@ export default class FeedsFolder {
 		});
 		const result = xml2js.xml2js(data);
 		console.log(result);
-		const items = result.elements.filter((e)=>e.name=="rss" || e.name == "feed")[0].elements[0].elements.filter(element=>element.name=="item"||element.name=="entry");
+		const items = result.elements
+			.filter((e) => e.name == "rss" || e.name == "feed")[0]
+			.elements[0].elements.filter(
+				(element) => element.name == "item" || element.name == "entry"
+			);
 		console.log(items);
 
 		const itemsResults = [];
-		items.forEach((item)=>{
+		items.forEach((item) => {
 			const itemsResult = {};
-			item.elements.forEach((element)=>{
-				if(element.name=="title") itemsResult["title"] = element.elements[0].text ?element.elements[0].text:element.elements[0].cdata ;
-				if(element.name=="description") itemsResult["content"] = element.elements[0].text ?element.elements[0].text:element.elements[0].cdata;
-				if(element.name=="author") itemsResult["author"] = element.elements[0].text ?element.elements[0].text:element.elements[0].cdata;
-				if(element.name=="link") itemsResult["link"] = element.elements[0].text ?element.elements[0].text:element.elements[0].cdata;
-				if(element.name=="pubDate") itemsResult["pubDate"] = element.elements[0].text ?element.elements[0].text:element.elements[0].cdata;
+			item.elements.forEach((element) => {
+				if (element.name == "title")
+					itemsResult["title"] = element.elements[0].text
+						? element.elements[0].text
+						: element.elements[0].cdata;
+				if (element.name == "description")
+					itemsResult["content"] = element.elements[0].text
+						? element.elements[0].text
+						: element.elements[0].cdata;
+				if (element.name == "author")
+					itemsResult["author"] = element.elements[0].text
+						? element.elements[0].text
+						: element.elements[0].cdata;
+				if (element.name == "link")
+					itemsResult["link"] = element.elements[0].text
+						? element.elements[0].text
+						: element.elements[0].cdata;
+				if (element.name == "pubDate")
+					itemsResult["pubDate"] = element.elements[0].text
+						? element.elements[0].text
+						: element.elements[0].cdata;
 			});
 			itemsResults.push(itemsResult);
 		});
 		console.log(itemsResults);
 		const feed = {
-			"items":itemsResults
+			items: itemsResults,
 		};
 		return feed;
 	}
@@ -88,9 +99,6 @@ export default class FeedsFolder {
 			.replace("{{item.content}}", htmlToMarkdown(item.content) ?? "")
 			.replace("{{item.author}}", item.author ?? "")
 			.replace("{{item.link}}", item.link ?? "")
-			.replace(
-				"{{item.pubDate}}",
-				DateTime.fromHTTP(item.pubDate).toISODate() ?? ""
-			);
+			.replace("{{item.pubDate}}", DateTime.fromHTTP(item.pubDate).toISODate() ?? "");
 	}
 }
