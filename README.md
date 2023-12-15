@@ -6,7 +6,7 @@ Create a note and tag it with the `feed` tag to represent an **RSS feed**. The c
 
 And, place a `template.md` file at the same level, or in a higher-level directory, to provide a template for all **RSS feeds** under it.
 
-After these final preparations, you can run the `Get the newlest articels from all feeds` command to get the latest subscription articles.
+After these final preparations, you can run the `Get the newlest articles from all feeds` command to get the latest subscription articles.
 
 ## FileTree Example
 

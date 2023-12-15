@@ -9,7 +9,7 @@ export default class RSSCopyistPlugin extends Plugin {
 		await this.loadSettings();
 		this.addCommand({
 			id: "get-the-feed",
-			name: "Get the newlest articels from the feed",
+			name: "Get the newlest articles from the feed",
 			checkCallback: (checking: boolean) => {
 				const activeFile = this.app.workspace.getActiveFile() as TFile;
 				if (!activeFile) return false;
@@ -26,7 +26,7 @@ export default class RSSCopyistPlugin extends Plugin {
 		});
 		this.addCommand({
 			id: "get-all-feeds",
-			name: "Get the newlest articels from all feeds",
+			name: "Get the newlest articles from all feeds",
 			callback: async () => {
 				const files = getNotesWithTag(this.app, "feed");
 				files.forEach(async (file) => {
@@ -37,7 +37,7 @@ export default class RSSCopyistPlugin extends Plugin {
 		});
 		this.addCommand({
 			id: "clear-all-feeds",
-			name: "Clear the articels from all feeds",
+			name: "Clear the articles from all feeds",
 			callback: async () => {
 				const files = getNotesWithTag(this.app, this.settings.tag);
 				for (const file of files) {
