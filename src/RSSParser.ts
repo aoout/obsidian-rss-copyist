@@ -3,13 +3,11 @@ import * as xml2js from "xml-js";
 export class RSSParser {
 	static parser(text: string) {
 		const result = xml2js.xml2js(text);
-		console.log(result);
 		const items = result.elements
 			.filter((e) => e.name == "rss" || e.name == "feed")[0]
 			.elements[0].elements.filter(
 				(element) => element.name == "item" || element.name == "entry"
 			);
-		console.log(items);
 
 		const itemsResults = [];
 		items.forEach((item) => {
@@ -38,7 +36,6 @@ export class RSSParser {
 			});
 			itemsResults.push(itemsResult);
 		});
-		console.log(itemsResults);
 		const feed = {
 			items: itemsResults,
 		};
