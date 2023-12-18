@@ -1,6 +1,7 @@
-import { request, Notice, Vault, htmlToMarkdown } from "obsidian";
+import { request, Notice, Vault, htmlToMarkdown,Platform } from "obsidian";
 import { DateTime } from "luxon";
 import { RSSParser } from "./RSSParser";
+import Parser from "rss-parser";
 
 function convertToValidFilename(string: string): string {
 	// eslint-disable-next-line no-useless-escape
@@ -49,8 +50,14 @@ export default class FeedsFolder {
 			url: url,
 			method: "GET",
 		});
+		if(Platform.isDesktop){
+			const module = await import ("rss-parser");
+			const parser = new module.default();
+			return await parser.parseString(data);
+		}else{
+			return RSSParser.parser(data);
+		}
 
-		return RSSParser.parser(data);
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any

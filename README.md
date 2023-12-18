@@ -8,6 +8,9 @@ And, place a `template.md` file at the same level, or in a higher-level director
 
 After these final preparations, you can run the `Get the newlest articles from all feeds` command to get the latest subscription articles.
 
+>[!note]
+>On the desktop side, the parsing effect is better than on the mobile side.
+
 ## FileTree Example
 
 ```
