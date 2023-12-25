@@ -1,7 +1,6 @@
 import { request, Notice, Vault, htmlToMarkdown,Platform } from "obsidian";
 import { DateTime } from "luxon";
 import { RSSParser } from "./RSSParser";
-import Parser from "rss-parser";
 
 function convertToValidFilename(string: string): string {
 	// eslint-disable-next-line no-useless-escape
