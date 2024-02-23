@@ -39,8 +39,8 @@ export default class FeedsFolder {
 			const images = mdcontent.match(/!\[.*?\]\((.*?)\)/) ?? ["", ""];
 			const firstImage = images[1];
 			const text = this.parseItem(template, item)
-				.replace("{{item.firstImage}}", firstImage ?? "")
-				.replace("{{item.feed}}", name ?? "");
+				.replaceAll("{{item.firstImage}}", firstImage ?? "")
+				.replaceAll("{{item.feed}}", name ?? "");
 
 			const filePath = this.folderPath + "/" + convertToValidFilename(item.title) + ".md";
 			vault.create(filePath, text).then((file) => {
@@ -92,10 +92,10 @@ export default class FeedsFolder {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	parseItem(template: string, item: any): string {
 		return template
-			.replace("{{item.title}}", item.title ?? "")
-			.replace("{{item.content}}", htmlToMarkdown(item.content) ?? "")
-			.replace("{{item.author}}", item.author ?? "")
-			.replace("{{item.link}}", item.link ?? "")
-			.replace("{{item.pubDate}}", DateTime.fromHTTP(item.pubDate).toISODate() ?? "");
+			.replaceAll("{{item.title}}", item.title ?? "")
+			.replaceAll("{{item.content}}", htmlToMarkdown(item.content) ?? "")
+			.replaceAll("{{item.author}}", item.author ?? "")
+			.replaceAll("{{item.link}}", item.link ?? "")
+			.replaceAll("{{item.pubDate}}", DateTime.fromHTTP(item.pubDate).toISODate() ?? "");
 	}
 }
