@@ -2,11 +2,13 @@ import { Plugin, TFile, TFolder } from "obsidian";
 import FeedsFolder from "./feed";
 import { getNotesWithTag } from "./utils/obsidianUtils";
 import { DEFAULT_SETTINGS, RSSCopyistSettings } from "./settings/settings";
+import { RSSCopyistSettingTab } from "./settings/settingsTab";
 
 export default class RSSCopyistPlugin extends Plugin {
 	settings: RSSCopyistSettings;
 	async onload() {
 		await this.loadSettings();
+		this.addSettingTab(new RSSCopyistSettingTab(this.app, this));
 		this.addCommand({
 			id: "get-the-feed",
 			name: "Get the newlest articles from the feed",
@@ -75,7 +77,8 @@ export default class RSSCopyistPlugin extends Plugin {
 				this.app.vault,
 				feedMetadata?.["url"],
 				template,
-				parseInt(feedMetadata?.["newestNum"])
+				parseInt(feedMetadata?.["newestNum"]),
+				this.settings.loadWebpageText
 			);
 		}
 	}

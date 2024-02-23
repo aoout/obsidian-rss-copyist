@@ -1,7 +1,7 @@
 import RSSCopyistPlugin from "../main";
 import { App, PluginSettingTab, Setting } from "obsidian";
 
-export class EpubImporterSettingsTab extends PluginSettingTab {
+export class RSSCopyistSettingTab extends PluginSettingTab {
 	plugin: RSSCopyistPlugin;
 	constructor(app: App, plugin: RSSCopyistPlugin) {
 		super(app, plugin);
@@ -24,5 +24,14 @@ export class EpubImporterSettingsTab extends PluginSettingTab {
 						await this.plugin.saveSettings();
 					})
 			);
+		new Setting(containerEl)
+			.setName("LoadWebpageText")
+			.setDesc("Load text from Webpage.")
+			.addToggle((toggle) => {
+				toggle.setValue(this.plugin.settings.loadWebpageText).onChange(async (value) => {
+					this.plugin.settings.loadWebpageText = value;
+					await this.plugin.saveSettings();
+				});
+			});
 	}
 }
