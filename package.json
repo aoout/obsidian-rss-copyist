@@ -1,6 +1,6 @@
 {
 	"name": "rss-copyist",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "get the rss articles as mdfiles to your vault. no settingstab, config it in mdfiles.",
 	"main": "lib/main.js",
 	"license": "MIT",
