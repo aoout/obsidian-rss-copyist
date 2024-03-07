@@ -55,7 +55,7 @@ tags:
 ```dataview
 table dateformat(file.mtime, "yyyy.MM.dd") AS "publish date",
 "![](" + firstImage + ")"
-where contains(file.folder, this.file.folder) and file.name != this.file.name
+where file.folder = this.file.folder + "/" + this.file.name
 and (!this.showunreadonly or unread)
 sort file.mtime DESC 
 ```
