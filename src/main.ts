@@ -11,7 +11,7 @@ export default class RSSCopyistPlugin extends Plugin {
 		this.addSettingTab(new RSSCopyistSettingTab(this.app, this));
 		this.addCommand({
 			id: "get-the-feed",
-			name: "Get the newlest articles from the feed",
+			name: "Get the newest articles from the feed",
 			checkCallback: (checking: boolean) => {
 				const activeFile = this.app.workspace.getActiveFile() as TFile;
 				if (!activeFile) return false;
@@ -28,7 +28,7 @@ export default class RSSCopyistPlugin extends Plugin {
 		});
 		this.addCommand({
 			id: "get-all-feeds",
-			name: "Get the newlest articles from all feeds",
+			name: "Get the newest articles from all feeds",
 			callback: async () => {
 				const files = getNotesWithTag(this.app, "feed");
 				files.forEach(async (file) => {
